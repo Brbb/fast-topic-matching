@@ -1,4 +1,4 @@
-module src
+module github.com/Brbb/fast-topic-matching
 
 go 1.15
 

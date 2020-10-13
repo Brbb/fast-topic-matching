@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fast-topic-matching/srcl/matching"
 	"fmt"
+	"github.com/brbb/fast-topic-matching/matching"
+	"github.com/gorilla/mux"
 	"html"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 var matcher = NewCSTrieMatcher()
