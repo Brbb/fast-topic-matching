@@ -1,5 +1,4 @@
 github.com/Brbb/fast-topic-matching v0.0.0-20201013093228-4d7dddba9aea h1:km6cyWfO8VLiJ0kal6paCNN4ns3q+mEgD1yXTZinMRQ=
-github.com/brbb/fast-topic-matching v0.0.0-20201013093228-4d7dddba9aea h1:kjjiqf0iGioxrzNEhNISGJSo6vDKq+92HeHIilKWHl4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
