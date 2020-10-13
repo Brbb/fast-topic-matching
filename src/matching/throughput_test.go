@@ -38,10 +38,6 @@ func init() {
 }
 
 func TestThroughput(t *testing.T) {
-	testThroughput(t, NewNaiveMatcher(), "naive")
-	testThroughput(t, NewInvertedBitmapMatcher(msgs), "inverted bitmap")
-	testThroughput(t, NewOptimizedInvertedBitmapMatcher(3), "optimized inverted bitmap")
-	testThroughput(t, NewTrieMatcher(), "trie")
 	testThroughput(t, NewCSTrieMatcher(), "cs-trie")
 }
 
@@ -59,22 +55,6 @@ func testThroughput(t *testing.T, m Matcher, name string) {
 	dur := time.Since(before)
 	throughput := numMsgs / dur.Seconds()
 	fmt.Printf("%s: %f msg/sec\n", name, throughput)
-}
-
-func BenchmarkPopulateNaive(b *testing.B) {
-	benchmarkPopulate(b, NewNaiveMatcher())
-}
-
-func BenchmarkPopulateInvertedBitmap(b *testing.B) {
-	benchmarkPopulate(b, NewInvertedBitmapMatcher(msgs))
-}
-
-func BenchmarkPopulateOptimizedInvertedBitmap(b *testing.B) {
-	benchmarkPopulate(b, NewOptimizedInvertedBitmapMatcher(3))
-}
-
-func BenchmarkPopulateTrie(b *testing.B) {
-	benchmarkPopulate(b, NewTrieMatcher())
 }
 
 func BenchmarkPopulateCSTrie(b *testing.B) {

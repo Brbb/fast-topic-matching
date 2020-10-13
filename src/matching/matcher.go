@@ -1,5 +1,7 @@
 package matching
 
+import "fmt"
+
 const (
 	delimiter = "."
 	wildcard  = "*"
@@ -7,7 +9,25 @@ const (
 )
 
 // Subscriber is a value associated with a subscription.
-type Subscriber interface{}
+type Subscriber interface {
+}
+
+type NotificationType string
+
+const (
+	Http      NotificationType = "Http"
+	WebSocket                  = "WS"
+)
+
+type Fascriber struct {
+	Notification NotificationType
+	ClientId     string
+	// probably extended configuration like endpoints
+}
+
+func (f Fascriber) ConfirmSubscription() {
+	fmt.Printf("%s will be notified through %s\n", f.ClientId, f.Notification)
+}
 
 // Subscription represents a topic subscription.
 type Subscription struct {

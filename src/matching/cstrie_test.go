@@ -1,21 +1,25 @@
 package matching
 
 import (
+	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNaiveMatcher(t *testing.T) {
+func TestCSTrieMatcher(t *testing.T) {
 	assert := assert.New(t)
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 		s1 = 1
 		s2 = 2
 	)
 
 	sub0, err := m.Subscribe("forex.*", s0)
+	sub0_json, _ := json.Marshal(&sub0)
+	fmt.Printf("%v", string(sub0_json))
 	assert.NoError(err)
 	sub1, err := m.Subscribe("*.usd", s0)
 	assert.NoError(err)
@@ -51,9 +55,9 @@ func TestNaiveMatcher(t *testing.T) {
 	assertEqual(assert, []Subscriber{}, m.Lookup("trade"))
 }
 
-func BenchmarkNaiveMatcherSubscribe(b *testing.B) {
+func BenchmarkCSTrieMatcherSubscribe(b *testing.B) {
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 	)
 	populateMatcher(m, 1000, 5)
@@ -64,9 +68,9 @@ func BenchmarkNaiveMatcherSubscribe(b *testing.B) {
 	}
 }
 
-func BenchmarkNaiveMatcherUnsubscribe(b *testing.B) {
+func BenchmarkCSTrieMatcherUnsubscribe(b *testing.B) {
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 	)
 	id, _ := m.Subscribe("foo.*.baz.qux.quux", s0)
@@ -78,9 +82,9 @@ func BenchmarkNaiveMatcherUnsubscribe(b *testing.B) {
 	}
 }
 
-func BenchmarkNaiveMatcherLookup(b *testing.B) {
+func BenchmarkCSTrieMatcherLookup(b *testing.B) {
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 	)
 	m.Subscribe("foo.*.baz.qux.quux", s0)
@@ -92,9 +96,9 @@ func BenchmarkNaiveMatcherLookup(b *testing.B) {
 	}
 }
 
-func BenchmarkNaiveMatcherSubscribeCold(b *testing.B) {
+func BenchmarkCSTrieMatcherSubscribeCold(b *testing.B) {
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 	)
 
@@ -104,9 +108,9 @@ func BenchmarkNaiveMatcherSubscribeCold(b *testing.B) {
 	}
 }
 
-func BenchmarkNaiveMatcherUnsubscribeCold(b *testing.B) {
+func BenchmarkCSTrieMatcherUnsubscribeCold(b *testing.B) {
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 	)
 	id, _ := m.Subscribe("foo.*.baz.qux.quux", s0)
@@ -117,9 +121,9 @@ func BenchmarkNaiveMatcherUnsubscribeCold(b *testing.B) {
 	}
 }
 
-func BenchmarkNaiveMatcherLookupCold(b *testing.B) {
+func BenchmarkCSTrieMatcherLookupCold(b *testing.B) {
 	var (
-		m  = NewNaiveMatcher()
+		m  = NewCSTrieMatcher()
 		s0 = 0
 	)
 	m.Subscribe("foo.*.baz.qux.quux", s0)
@@ -130,98 +134,98 @@ func BenchmarkNaiveMatcherLookupCold(b *testing.B) {
 	}
 }
 
-func BenchmarkMultithreaded1Thread5050Naive(b *testing.B) {
+func BenchmarkMultithreaded1Thread5050CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 1
 	benchmark5050(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded2Thread5050Naive(b *testing.B) {
+func BenchmarkMultithreaded2Thread5050CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 2
 	benchmark5050(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded4Thread5050Naive(b *testing.B) {
+func BenchmarkMultithreaded4Thread5050CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 4
 	benchmark5050(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded8Thread5050Naive(b *testing.B) {
+func BenchmarkMultithreaded8Thread5050CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 8
 	benchmark5050(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewTrieMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded12Thread5050Naive(b *testing.B) {
+func BenchmarkMultithreaded12Thread5050CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 12
 	benchmark5050(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewTrieMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded16Thread5050Naive(b *testing.B) {
+func BenchmarkMultithreaded16Thread5050CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 16
 	benchmark5050(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded1Thread9010Naive(b *testing.B) {
+func BenchmarkMultithreaded1Thread9010CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 1
 	benchmark9010(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded2Thread9010Naive(b *testing.B) {
+func BenchmarkMultithreaded2Thread9010CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 2
 	benchmark9010(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded4Thread9010Naive(b *testing.B) {
+func BenchmarkMultithreaded4Thread9010CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 4
 	benchmark9010(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded8Thread9010Naive(b *testing.B) {
+func BenchmarkMultithreaded8Thread9010CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 8
 	benchmark9010(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewTrieMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded12Thread9010Naive(b *testing.B) {
+func BenchmarkMultithreaded12Thread9010CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 12
 	benchmark9010(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewTrieMatcher()
+		return NewCSTrieMatcher()
 	})
 }
 
-func BenchmarkMultithreaded16Thread9010Naive(b *testing.B) {
+func BenchmarkMultithreaded16Thread9010CSTrie(b *testing.B) {
 	numItems := 1000
 	numThreads := 16
 	benchmark9010(b, numItems, numThreads, func(items [][]string) Matcher {
-		return NewNaiveMatcher()
+		return NewCSTrieMatcher()
 	})
 }
